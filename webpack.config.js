@@ -7,16 +7,16 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const isProd = process.env.NODE_ENV === "production"
 const isDev = !isProd
 
-const filename = ext => (isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`)
+const filename = (ext) => (isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`)
 
 const jsLoaders = () => {
   const loaders = [
     {
       loader: "babel-loader",
       options: {
-        presets: ["@babel/preset-env"],
-      },
-    },
+        presets: ["@babel/preset-env"]
+      }
+    }
   ]
   if (isDev) {
     loaders.push("eslint-loader")
@@ -30,18 +30,18 @@ module.exports = {
   entry: ["@babel/polyfill", "./index.js"],
   output: {
     filename: filename("js"),
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "dist")
   },
   resolve: {
     extensions: [".js"],
     alias: {
       "@": path.resolve(__dirname, "src"),
-      "@core": path.resolve(__dirname, "src/core"),
-    },
+      "@core": path.resolve(__dirname, "src/core")
+    }
   },
   devServer: {
     port: 3000,
-    hot: isDev,
+    hot: isDev
   },
   devtool: isDev ? "source-map" : false,
   module: {
@@ -53,36 +53,34 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
             options: {
               hmr: isDev,
-              reloadAll: true,
-            },
+              reloadAll: true
+            }
           },
           "css-loader",
-          "sass-loader",
-        ],
+          "sass-loader"
+        ]
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: jsLoaders(),
-      },
-    ],
+        use: jsLoaders()
+      }
+    ]
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HTMLWebpackPlugin({
-      template: "index.html",
+      template: "./index.html",
       minify: {
         removeComments: isProd,
-        collapseWhitespace: isProd,
-      },
+        collapseWhitespace: isProd
+      }
     }),
     new CopyPlugin({
-      patterns: [
-        { from: path.resolve(__dirname, "src/favicon.ico"), to: "dist" },
-      ],
+      patterns: [{ from: path.resolve(__dirname, "src/favicon.ico"), to: "" }]
     }),
     new MiniCssExtractPlugin({
-      filename: filename("css"),
-    }),
-  ],
+      filename: filename("css")
+    })
+  ]
 }
