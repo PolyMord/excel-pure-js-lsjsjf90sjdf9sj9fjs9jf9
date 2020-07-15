@@ -1,6 +1,7 @@
 import { $ } from '@core/dom'
 
 export function resizeHandler($root, event) {
+  event.preventDefault()
   const $resizer = $(event.target)
   const $parent = $resizer.closest('[data-type="resizable"')
   const coords = $parent.getCoords()
