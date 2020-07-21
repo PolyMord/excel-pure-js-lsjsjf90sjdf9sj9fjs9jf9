@@ -8,18 +8,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = !isProd
 
-const filename = ext => (isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`)
+const filename = ext =>
+  isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
 
 const jsLoaders = () => {
-  const loaders = [
-    {
-      loader: 'babel-loader',
-      options: {
-        presets: ['@babel/preset-env'],
-        plugins: ['@babel/plugin-proposal-class-properties']
-      }
-    }
-  ]
+  const loaders = ['babel-loader']
   if (isDev) {
     loaders.push('eslint-loader')
   }
@@ -79,7 +72,9 @@ module.exports = {
       }
     }),
     new CopyPlugin({
-      patterns: [{ from: path.resolve(__dirname, 'src/favicon.ico'), to: '' }]
+      patterns: [
+        { from: path.resolve(__dirname, 'src/favicon.ico'), to: '' }
+      ]
     }),
     new MiniCssExtractPlugin({
       filename: filename('css')
